@@ -15,17 +15,17 @@ public class Application {
         try {
             BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
 //            PolyLine polyLine = new PolyLine()
-//                    .addPoint(10,10)
+//                    .addPoint(50,50)
 //                    .addPoint(200,250)
-//                    .addPoint(250,10);
+//                    .addPoint(250,50);
             PolyLine polyLine = new PolyLine()
-                    .addPoint(2,2)
+                    .addPoint(5,5)
                     .addPoint(19,5)
                     .addPoint(19,20)
                     .addPoint(29,20)
                     .addPoint(31,4)
-                    .addPoint(49,12);
-            Drower drower = new Drower(bufferedImage, polyLine, 30);
+                    .addPoint(45,12);
+            Drower drower = new Drower(bufferedImage, polyLine, 5.0, polyLine.getFirstPoint(), polyLine.getLastPoint());
         } catch (IOException e) {
             e.printStackTrace();
         }

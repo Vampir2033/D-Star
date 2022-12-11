@@ -3,6 +3,7 @@ package engine;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.awt.*;
 import java.util.Arrays;
 
 @Getter
@@ -24,6 +25,14 @@ public class PolyLine {
 
     public int size() {
         return xArr.length;
+    }
+
+    public Point getFirstPoint() {
+        return new Point(xArr[0], yArr[0]);
+    }
+
+    public Point getLastPoint() {
+        return new Point(xArr[size()-1], yArr[size()-1]);
     }
 
     private int[] addElementToArr(int[] oldArr, int element) {
