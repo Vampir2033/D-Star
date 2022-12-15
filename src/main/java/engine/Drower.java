@@ -4,19 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Drower extends JFrame {
+    private final Panel panel;
 
-    public Drower(Image locationImage, PolyLine polyLine, double scale, Point startPoint, Point purposePoint) throws HeadlessException {
+    public Drower(Image locationImage, double scale, Point startPoint, Point purposePoint, PointsContainer pointsContainer) throws HeadlessException {
         super("D-Star");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Panel panel = new Panel(locationImage, polyLine, scale, startPoint, purposePoint);
+        panel = new Panel(locationImage, scale, startPoint, purposePoint, pointsContainer);
         add(panel);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    public void paint(Graphics g)
-    {
-        super.paint(g);
+    public void repaint() {
+        panel.repaint();
     }
 }

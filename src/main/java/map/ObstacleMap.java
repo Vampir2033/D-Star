@@ -1,3 +1,5 @@
+package map;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -25,27 +27,27 @@ public class ObstacleMap {
         }
     }
 
-    public CellStatus getCellStatus(int x, int y) {
+    public CellFreedom getCellStatus(int x, int y) {
         if(x < 0 || x >= width || y < 0 || y >= height) {
-            return CellStatus.OBSTRUCTION;
+            return CellFreedom.OBSTRUCTION;
         } else {
-            return data[x][y] == 0 ? CellStatus.EMPTY : CellStatus.OBSTRUCTION;
+            return data[x][y] == 0 ? CellFreedom.EMPTY : CellFreedom.OBSTRUCTION;
         }
     }
 
-    public CellStatus getCellStatus(Point p){
+    public CellFreedom getCellStatus(Point p){
         return getCellStatus(p.x,p.y);
     }
 
     public boolean checkPass(Point p1, Point p2) {
         if(p1.equals(p2)) {
             return false;
-        } else if (!CellStatus.EMPTY.equals(getCellStatus(p1)) || !CellStatus.EMPTY.equals(getCellStatus(p2))) {
+        } else if (!CellFreedom.EMPTY.equals(getCellStatus(p1)) || !CellFreedom.EMPTY.equals(getCellStatus(p2))) {
             return false;
         } else {
             List<Point> passCells = calcPassCells(p1,p2);
             for (Point cell : passCells) {
-                if(!CellStatus.EMPTY.equals(getCellStatus(cell))) {
+                if(!CellFreedom.EMPTY.equals(getCellStatus(cell))) {
                     return false;
                 }
             }
