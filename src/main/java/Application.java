@@ -11,10 +11,10 @@ import java.net.URL;
 public class Application {
 
     public static void main(String[] args) throws IOException {
-        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/32_19.bmp");
-        Point firstPoint = new Point(3,10);
-        Point purposePoint = new Point(28,4);
-        double scale = 32;
+//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/32_19.bmp");
+//        Point firstPoint = new Point(3,10);
+//        Point purposePoint = new Point(28,4);
+//        double scale = 50;
 
 //        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5.bmp");
 //        Point firstPoint = new Point(1,2);
@@ -26,22 +26,37 @@ public class Application {
 //        Point purposePoint = new Point(1,4);
 //        double scale = 64;
 
+//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/512x128_labyrinth.bmp");
+//        Point firstPoint = new Point(100,30);
+//        Point purposePoint = new Point(280,30);
+//        double scale = 2;
+
+        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
+        Point firstPoint = new Point(73,10);
+        Point purposePoint = new Point(80,60);
+        double scale = 10;
+
         assert imageFileUrl != null;
         BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
         ObstacleMap map = new ObstacleMap(bufferedImage);
         AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(map,firstPoint,purposePoint);
         Drower drower = new Drower(bufferedImage, scale, firstPoint, purposePoint, aStarAlgorithm);
+        drower.repaint();
         boolean algorithmEnd = false;
         do {
-            algorithmEnd = aStarAlgorithm.nextIteration();
-            drower.repaint();
-            try {
-//                Thread.sleep(1000);
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                algorithmEnd = aStarAlgorithm.nextIteration();
+                drower.repaint();
+//            try {
+////                Thread.sleep(1000);
+////                Thread.sleep(10);
+////                Thread.sleep(5);
+//                Thread.sleep(1);
+////                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         } while (!algorithmEnd);
+//        drower.repaint();
         System.out.println("Алгоритм завершил свою работу");
     }
 }

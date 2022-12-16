@@ -42,6 +42,15 @@ public class GetImage {
         return statusImageMap.get(status);
     }
 
+    public static Image getImageByVector(Point vector) {
+        Image img = directionMap.getOrDefault(vector, null);
+        if(img != null) {
+            return img;
+        } else {
+            throw new RuntimeException("Не найдено изображение для вектора " + vector);
+        }
+    }
+
     public static Image getImageFromRes(String imgName) throws IOException {
         URL url = GetImage.class.getClassLoader().getResource(imgName);
         assert url != null;

@@ -12,10 +12,15 @@ public class AStarPoint extends Point implements Comparable<AStarPoint> {
     private static Point endPoint;
     @Getter @Setter
     private AStarPoint previousPoint;
+    @Getter @Setter
+    private java.lang.Double bufferedDistanceToStart;
+//    @Getter @Setter
+//    private AStarPoint nextPoint;
 
     public AStarPoint(Point p, AStarPoint previousPoint) {
         super(p);
         this.previousPoint = previousPoint;
+        this.bufferedDistanceToStart = null;
     }
 
     public AStarPoint(Point p) {
@@ -23,19 +28,15 @@ public class AStarPoint extends Point implements Comparable<AStarPoint> {
         this.previousPoint = null;
     }
 
-    public int manhattanDistanceToPoint() {
-        return manhattanDistanceToPoint(endPoint);
-    }
-
     public int manhattanDistanceToPoint(Point point) {
         return Math.abs(point.x - x) + Math.abs(point.y - y);
     }
-    
-    
 
     public double distanceToStart() {
         if(previousPoint == null) {
             return 0.0;
+        } else if(bufferedDistanceToStart != null) {
+            return bufferedDistanceToStart;
         } else {
             return previousPoint.distanceToStart() + distance(previousPoint);
         }
@@ -46,17 +47,16 @@ public class AStarPoint extends Point implements Comparable<AStarPoint> {
     }
 
     public double calcPointCost() {
-        return distanceToStart() + manhattanDistanceToPoint();
+        return calcPointCost(endPoint);
     }
 
+    public void saveDistanceToStart() {
+        bufferedDistanceToStart = distanceToStart();
+    }
 
     public List<Point> getStack() {
         return getStack(0);
     }
-
-//    public Point getVector() {
-//
-//    }
 
     private List<Point> getStack(int i) {
         if(previousPoint == null) {
@@ -69,7 +69,6 @@ public class AStarPoint extends Point implements Comparable<AStarPoint> {
             return result;
         }
     }
-
 
     @Override
     public int compareTo(AStarPoint p) {

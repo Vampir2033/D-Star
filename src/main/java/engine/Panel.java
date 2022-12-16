@@ -33,6 +33,8 @@ public class Panel extends JPanel {
         g2.drawImage(image,0,0,null);
         var points = pointsContainer.getPointStatusMap();
         points.forEach((point,status) -> drawCell(g2,point,status));
+        var vectors = pointsContainer.getPointsVectors();
+        vectors.forEach((point, vector) -> drawVector(g2,point,vector));
         Image startImg = getStartImage();
         g2.drawImage(startImg,startPoint.x,startPoint.y,1,1,null);
         Image purposeImg = GetImage.getPurposeImage();
@@ -46,5 +48,9 @@ public class Panel extends JPanel {
 
     private void drawCell(Graphics graphics, Point point, CellStatus cellStatus) {
         graphics.drawImage(GetImage.getImageByStatus(cellStatus),point.x,point.y,1,1,null);
+    }
+    
+    private void drawVector(Graphics graphics, Point point, Point vector) {
+        graphics.drawImage(GetImage.getImageByVector(vector),point.x,point.y,1,1,null);
     }
 }

@@ -8,9 +8,11 @@ import map.ObstacleMap;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static astar.AlgorithmIterations.UPDATE_NEIGHBOURS;
 import static astar.AlgorithmIterations.INIT_ACTIVE_POINT;
+import static map.CellFreedom.EMPTY;
 
 public class AStarAlgorithm implements PointsContainer {
     private final ObstacleMap obstacleMap;
@@ -18,9 +20,10 @@ public class AStarAlgorithm implements PointsContainer {
     private final Point pointEnd;
 
     private final Map<Point, AStarPoint> openPoints;
-    private final Set<Point> closePoints;
-    private final Set<Point> roadPoints;
+    private final Set<AStarPoint> closePoints;
+    private final Set<AStarPoint> roadPoints;
     private AStarPoint activePoint;
+    private static Integer block = 0;
 
     private AlgorithmIterations activeIteration;
 
@@ -38,17 +41,20 @@ public class AStarAlgorithm implements PointsContainer {
     }
 
     public boolean nextIteration() {
-        switch (activeIteration) {
-            case INIT_ACTIVE_POINT -> {
-                setActivePoint();
-                activeIteration = UPDATE_NEIGHBOURS;
+        synchronized (block) {
+            switch (activeIteration) {
+                case INIT_ACTIVE_POINT -> {
+                    setActivePoint();
+//                System.out.println("Активная клетка: " + activePoint);
+                    activeIteration = UPDATE_NEIGHBOURS;
+                }
+                case UPDATE_NEIGHBOURS -> {
+                    getNeighbours(activePoint);
+                    activeIteration = INIT_ACTIVE_POINT;
+                }
             }
-            case UPDATE_NEIGHBOURS -> {
-                getNeighbours(activePoint);
-                activeIteration = INIT_ACTIVE_POINT;
-            }
+            return pointEnd.equals(activePoint);
         }
-        return pointEnd.equals(activePoint);
     }
 
     private void setActivePoint() {
@@ -60,30 +66,33 @@ public class AStarAlgorithm implements PointsContainer {
             activePoint = openPoints.values().stream()
                     .min(AStarPoint::compareTo)
                     .orElseThrow();
+            activePoint.saveDistanceToStart();
         }
     }
 
-//    private void updateNeighbours() {
-//        openPoints.addAll(getNeighbours(activePoint));
-//    }
-
-    private List<AStarPoint> getNeighbours(AStarPoint p) {
-        List<AStarPoint> result = new ArrayList<>();
+    private void getNeighbours(AStarPoint p) {
         for(int x = p.x-1; x <= p.x+1; x++) {
             for(int y = p.y-1; y <= p.y+1; y++){
-                if(x != p.x || y != p.y) {
-                    AStarPoint neighbour = new AStarPoint(new Point(x,y), p);
-                    if(obstacleMap.getCellStatus(neighbour) == CellFreedom.EMPTY && !closePoints.contains(neighbour)) {
-                        if(openPoints.containsKey(neighbour) && (openPoints.get(neighbour).calcPointCost() > neighbour.calcPointCost())) {
-                            openPoints.get(neighbour).setPreviousPoint(p);
-                        } else {
-                            openPoints.put(neighbour, neighbour);
+                AStarPoint neighbour = new AStarPoint(new Point(x,y));
+                // проверка, действительно ли позицию можно считать соседом
+                if(!neighbour.equals(activePoint)
+                        && obstacleMap.getCellStatus(neighbour) == EMPTY
+                        && !closePoints.contains(neighbour)) {
+                    if(openPoints.containsKey(neighbour)) {
+                        neighbour = openPoints.get(neighbour);
+                        double activePointDistanceToStart = activePoint.distanceToStart();
+                        double neighbourDistanceToStart = neighbour.distanceToStart();
+                        double distanceToNeighbour = activePoint.distance(neighbour);
+                        if(neighbourDistanceToStart > activePointDistanceToStart + distanceToNeighbour) {
+                            neighbour.setPreviousPoint(activePoint);
                         }
+                    } else {
+                        neighbour.setPreviousPoint(activePoint);
+                        openPoints.put(neighbour,neighbour);
                     }
                 }
             }
         }
-        return result;
     }
 
     private double calcCellCost(Point cell, Point cellFrom, Point sellTo) {
@@ -98,14 +107,34 @@ public class AStarAlgorithm implements PointsContainer {
 
     @Override
     public Map<Point, CellStatus> getPointStatusMap() {
-        Map<Point, CellStatus> result = new HashMap<>();
-        openPoints.keySet().forEach(p -> result.put(p,CellStatus.OPEN));
-        closePoints.forEach(p -> result.put(p,CellStatus.CLOSE));
-        if(activePoint != null) {
-            result.put(activePoint, CellStatus.ACTIVE);
-            roadPoints.clear();
-            activePoint.getStack().forEach(point -> result.put(point,CellStatus.WAY));
+        synchronized (block) {
+            Map<Point, CellStatus> result = new ConcurrentHashMap<>();
+            openPoints.keySet().forEach(p -> result.put(p, CellStatus.OPEN));
+            closePoints.forEach(p -> result.put(p, CellStatus.CLOSE));
+            if (activePoint != null) {
+                result.put(activePoint, CellStatus.ACTIVE);
+                roadPoints.clear();
+                activePoint.getStack().forEach(point -> result.put(point, CellStatus.WAY));
+            }
+            return result;
         }
-        return result;
     }
+
+    @Override
+    public Map<Point, Point> getPointsVectors() {
+        Map<Point, Point> vectors = new HashMap<>();
+//        Set<AStarPoint> unionPoints = new HashSet<>();
+//        unionPoints.addAll(openPoints.values());
+//        unionPoints.addAll(closePoints);
+//
+//        for(AStarPoint p : unionPoints) {
+//            AStarPoint prevPoint = p.getPreviousPoint();
+//            if(prevPoint != null && !p.equals(pointEnd)) {
+//                vectors.put(p, new Point(prevPoint.x - p.x,prevPoint.y - p.y));
+//            }
+//        }
+        return vectors;
+    }
+
+
 }
