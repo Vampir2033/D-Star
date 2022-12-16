@@ -11,6 +11,7 @@ import java.net.URL;
 public class Application {
 
     public static void main(String[] args) throws IOException {
+        // карту устанавливать здесь
 //        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/32_19.bmp");
 //        Point firstPoint = new Point(3,10);
 //        Point purposePoint = new Point(28,4);
@@ -21,20 +22,15 @@ public class Application {
 //        Point purposePoint = new Point(5,2);
 //        double scale = 64;
 
-//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5_v2.bmp");
-//        Point firstPoint = new Point(4,0);
-//        Point purposePoint = new Point(1,4);
-//        double scale = 64;
+        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5_v2.bmp");
+        Point firstPoint = new Point(4,0);
+        Point purposePoint = new Point(1,4);
+        double scale = 64;
 
-//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/512x128_labyrinth.bmp");
-//        Point firstPoint = new Point(100,30);
-//        Point purposePoint = new Point(280,30);
-//        double scale = 2;
-
-        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
-        Point firstPoint = new Point(73,10);
-        Point purposePoint = new Point(80,60);
-        double scale = 10;
+//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
+//        Point firstPoint = new Point(73,10);
+//        Point purposePoint = new Point(80,60);
+//        double scale = 10;
 
         assert imageFileUrl != null;
         BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
@@ -46,6 +42,7 @@ public class Application {
         do {
                 algorithmEnd = aStarAlgorithm.nextIteration();
                 drower.repaint();
+                // задержку регулировать здесь
 //            try {
 ////                Thread.sleep(1000);
 ////                Thread.sleep(10);
