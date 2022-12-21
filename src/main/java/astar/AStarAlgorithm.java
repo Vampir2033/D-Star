@@ -78,7 +78,8 @@ public class AStarAlgorithm implements PointsContainer {
                 // проверка, действительно ли позицию можно считать соседом
                 if(!neighbour.equals(activePoint)
                         && obstacleMap.getCellStatus(neighbour) == EMPTY
-                        && !closePoints.contains(neighbour)) {
+                        && !closePoints.contains(neighbour)
+                        && robot.checkPointAvailableForRobot(neighbour,obstacleMap)) {
                     if(openPoints.containsKey(neighbour)) {
                         neighbour = openPoints.get(neighbour);
                         double activePointDistanceToStart = activePoint.distanceToStart();

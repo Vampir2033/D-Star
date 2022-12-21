@@ -2,12 +2,16 @@ package astar;
 
 import engine.Robot;
 import lombok.Getter;
+import map.CellFreedom;
+import map.ObstacleMap;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import static map.CellFreedom.EMPTY;
 
 public class RobotHexagon implements Robot {
     @Getter
@@ -21,7 +25,23 @@ public class RobotHexagon implements Robot {
         this.position = position;
     }
 
-    public boolean checkPointInHex(Point point) {
+    @Override
+    public boolean checkPointAvailableForRobot(Point point, ObstacleMap map) {
+        Robot checkedRobot = new RobotHexagon(radius,null,point);
+        for(int x = point.x-radius; x <= point.x+radius; x++) {
+            for(int y = point.y-radius; y <= point.y+radius; y++) {
+                Point checkedPoint = new Point(x,y);
+                if(checkedRobot.checkPointUnderRobot(checkedPoint)
+                        && map.getCellStatus(checkedPoint) != EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkPointUnderRobot(Point point) {
         List<Line2D> lines = getHexLines(position,radius);
         Line2D centerToPointLine = new Line2D.Double(position,point);
         for(Line2D hexLine : lines) {

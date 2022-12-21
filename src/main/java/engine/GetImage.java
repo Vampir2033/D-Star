@@ -36,6 +36,7 @@ public class GetImage {
             statusImageMap.put(CellStatus.OPEN, getImageFromRes("images/cells/open.png"));
             statusImageMap.put(CellStatus.CLOSE, getImageFromRes("images/cells/close.png"));
             statusImageMap.put(CellStatus.WAY, getImageFromRes("images/cells/way.png"));
+            statusImageMap.put(CellStatus.UNDER_ROBOT, getImageFromRes("images/cells/under_robot.png"));
 
             directionMap.put(new Point(0,-1), getImageFromRes("images/scratch/N.png"));
             directionMap.put(new Point(1,0), getImageFromRes("images/scratch/E.png"));

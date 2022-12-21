@@ -5,4 +5,5 @@ public enum CellStatus {
     OPEN,
     CLOSE,
     WAY,
+    UNDER_ROBOT,
 }
