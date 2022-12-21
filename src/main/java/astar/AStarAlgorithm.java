@@ -14,19 +14,30 @@ import static astar.AlgorithmIterations.INIT_ACTIVE_POINT;
 import static map.CellFreedom.EMPTY;
 
 public class AStarAlgorithm implements PointsContainer {
+    // карта препятствий
     private final ObstacleMap obstacleMap;
+    // точка старта
     private final Point pointStart;
+    // точка финиша
     private final Point pointEnd;
+    // объект робота
     private final Robot robot;
 
+    // openPoints - нерасчитанные точки
     private final Map<Point, AStarPoint> openPoints;
+    //closePoints - точки, которые уже расчитаны и от них уже есть кратчайший путь до точки старта
     private final Set<AStarPoint> closePoints;
+    //roadPoints - подсвечивает кртачайшую дорогу красным
     private final Set<AStarPoint> roadPoints;
+    //activePoint - текущая активная точка, относительно которой мы просчитываем маршрут (подсвечивается желтым)
     private AStarPoint activePoint;
+    //необходим для совместной работы алгоритма и отрисовщика
     private static Integer block = 0;
 
+    // текущее состояние алгоритма
     private AlgorithmIterations activeIteration;
 
+    // конструктор
     public AStarAlgorithm(ObstacleMap obstacleMap, Point pointStart, Point pointEnd, Robot robot) {
         this.obstacleMap = obstacleMap;
         this.pointStart = pointStart;
@@ -41,6 +52,7 @@ public class AStarAlgorithm implements PointsContainer {
         AStarPoint.setEndPoint(pointEnd);
     }
 
+    // метод, управляющий последовательностью итераций
     public boolean nextIteration() {
         synchronized (block) {
             switch (activeIteration) {
@@ -58,6 +70,7 @@ public class AStarAlgorithm implements PointsContainer {
         }
     }
 
+    // Поиск новой активной точки
     private void setActivePoint() {
         if(activePoint == null) {
             activePoint = new AStarPoint(pointStart);
@@ -71,6 +84,7 @@ public class AStarAlgorithm implements PointsContainer {
         }
     }
 
+    // Анализ соседей активной точки
     private void getNeighbours(AStarPoint p) {
         for(int x = p.x-1; x <= p.x+1; x++) {
             for(int y = p.y-1; y <= p.y+1; y++){
@@ -97,15 +111,15 @@ public class AStarAlgorithm implements PointsContainer {
         }
     }
 
-    private double calcCellCost(Point cell, Point cellFrom, Point sellTo) {
-        return cellFrom.distance(cell) + Math.abs(sellTo.x-cell.x) + Math.abs(sellTo.y-cell.y);
-    }
-
-    private Point nextPointToPurpose(Point flowPoint, Point purposePoint) {
-        int maxAbs = Math.max(Math.abs(purposePoint.x- flowPoint.x), Math.abs(purposePoint.y - flowPoint.y));
-        Point shift = new Point((purposePoint.x- flowPoint.x)/maxAbs, (purposePoint.y - flowPoint.y)/maxAbs);
-        return new Point(flowPoint.x + shift.x, flowPoint.y + shift.y);
-    }
+//    private double calcCellCost(Point cell, Point cellFrom, Point sellTo) {
+//        return cellFrom.distance(cell) + Math.abs(sellTo.x-cell.x) + Math.abs(sellTo.y-cell.y);
+//    }
+//
+//    private Point nextPointToPurpose(Point flowPoint, Point purposePoint) {
+//        int maxAbs = Math.max(Math.abs(purposePoint.x- flowPoint.x), Math.abs(purposePoint.y - flowPoint.y));
+//        Point shift = new Point((purposePoint.x- flowPoint.x)/maxAbs, (purposePoint.y - flowPoint.y)/maxAbs);
+//        return new Point(flowPoint.x + shift.x, flowPoint.y + shift.y);
+//    }
 
     @Override
     public Map<Point, CellStatus> getPointStatusMap() {
@@ -122,6 +136,7 @@ public class AStarAlgorithm implements PointsContainer {
         }
     }
 
+    // метод для отображения стрелок
     @Override
     public Map<Point, Point> getPointsVectors() {
         Map<Point, Point> vectors = new HashMap<>();

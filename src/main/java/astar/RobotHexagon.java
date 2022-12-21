@@ -14,9 +14,12 @@ import java.util.List;
 import static map.CellFreedom.EMPTY;
 
 public class RobotHexagon implements Robot {
+    // Радиус робота
     @Getter
     private final int radius;
+    // картинка робота
     private final Image image;
+    // текущая позиция робота
     private Point position;
 
     public RobotHexagon(int radius, Image image, Point position) {
@@ -40,6 +43,7 @@ public class RobotHexagon implements Robot {
         return true;
     }
 
+    // проверка, находится ли ячейка под роботом
     @Override
     public boolean checkPointUnderRobot(Point point) {
         List<Line2D> lines = getHexLines(position,radius);
@@ -67,6 +71,7 @@ public class RobotHexagon implements Robot {
         return new Point(position.x-radius, position.y-radius);
     }
 
+    // получение линий шестиугольника
     private List<Line2D> getHexLines(Point center, int radius) {
         List<Point2D> hexTops = new ArrayList<>();
         for(int grad = 0; grad <= 360; grad += 60) {

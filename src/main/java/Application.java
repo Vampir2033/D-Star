@@ -20,10 +20,15 @@ public class Application {
 //        double scale = 50;
 //        int radius = 2;
 
+        // Изображение
 //        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5.bmp");
+        // Точка старта
 //        Point firstPoint = new Point(1,2);
+        // Точка финиша
 //        Point purposePoint = new Point(5,2);
+        // масштаб
 //        double scale = 64;
+        // Радиус робота от 1 до infinity
 //        int radius = 1;
 
 //        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5_v2.bmp");
@@ -45,12 +50,18 @@ public class Application {
         int radius = 4;
 
         assert imageFileUrl != null;
+        // инициализация карты
         BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
+        // анализ препятствий
         ObstacleMap map = new ObstacleMap(bufferedImage);
+        // инициализация робота
         RobotHexagon robotHexagon = new RobotHexagon(radius, GetImage.getHexagonImage(), firstPoint);
+        // инициализация алгоритма поиска
         AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(map,firstPoint,purposePoint, robotHexagon);
+        // инициализация отрисовщика
         Drower drower = new Drower(bufferedImage, scale, firstPoint, purposePoint, aStarAlgorithm);
         drower.repaint();
+        // старт алгоритма
         boolean algorithmEnd = false;
         try {
             do {

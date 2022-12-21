@@ -8,6 +8,6 @@ public interface PointsContainer {
     Map<Point, CellStatus> getPointStatusMap();
     //метод, который возвращает направления для точки (стрелочки)
     Map<Point, Point> getPointsVectors();
-
+    // Получение робота
     Robot getRobot();
 }
