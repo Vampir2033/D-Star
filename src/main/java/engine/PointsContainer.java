@@ -8,5 +8,5 @@ public interface PointsContainer {
 
     Map<Point, Point> getPointsVectors();
 
-//    void printStatus();
+    Robot getRobot();
 }

@@ -14,8 +14,6 @@ public class AStarPoint extends Point implements Comparable<AStarPoint> {
     private AStarPoint previousPoint;
     @Getter @Setter
     private java.lang.Double bufferedDistanceToStart;
-//    @Getter @Setter
-//    private AStarPoint nextPoint;
 
     public AStarPoint(Point p, AStarPoint previousPoint) {
         super(p);

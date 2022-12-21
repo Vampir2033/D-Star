@@ -1,5 +1,7 @@
 import astar.AStarAlgorithm;
+import astar.RobotHexagon;
 import engine.Drower;
+import engine.GetImage;
 import map.ObstacleMap;
 
 import javax.imageio.ImageIO;
@@ -22,20 +24,21 @@ public class Application {
 //        Point purposePoint = new Point(5,2);
 //        double scale = 64;
 
-        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5_v2.bmp");
-        Point firstPoint = new Point(4,0);
-        Point purposePoint = new Point(1,4);
-        double scale = 64;
+//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/7_5_v2.bmp");
+//        Point firstPoint = new Point(4,0);
+//        Point purposePoint = new Point(1,4);
+//        double scale = 64;
 
-//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
-//        Point firstPoint = new Point(73,10);
-//        Point purposePoint = new Point(80,60);
-//        double scale = 10;
+        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
+        Point firstPoint = new Point(73,10);
+        Point purposePoint = new Point(80,60);
+        double scale = 10;
 
         assert imageFileUrl != null;
         BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
         ObstacleMap map = new ObstacleMap(bufferedImage);
-        AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(map,firstPoint,purposePoint);
+        RobotHexagon robotHexagon = new RobotHexagon(4, GetImage.getHexagonImage(), firstPoint, 0.0);
+        AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(map,firstPoint,purposePoint, robotHexagon);
         Drower drower = new Drower(bufferedImage, scale, firstPoint, purposePoint, aStarAlgorithm);
         drower.repaint();
         boolean algorithmEnd = false;

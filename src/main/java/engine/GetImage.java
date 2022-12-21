@@ -1,5 +1,7 @@
 package engine;
 
+import lombok.Getter;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
@@ -12,6 +14,19 @@ public class GetImage {
     private static Map<Point, Image> directionMap;
     private static Image startImage;
     private static Image purposeImage;
+    private static Image hexagonImage;
+
+    public static Image getStartImage() {
+        return startImage;
+    }
+
+    public static Image getPurposeImage() {
+        return purposeImage;
+    }
+
+    public static Image getHexagonImage() {
+        return hexagonImage;
+    }
 
     static {
         statusImageMap = new HashMap<>();
@@ -33,6 +48,7 @@ public class GetImage {
 
             startImage = getImageFromRes("images/cells/start_people.png");
             purposeImage = getImageFromRes("images/cells/purpose.png");
+            hexagonImage = getImageFromRes("images/scratch/hexagon.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,18 +71,6 @@ public class GetImage {
         URL url = GetImage.class.getClassLoader().getResource(imgName);
         assert url != null;
         return ImageIO.read(url);
-    }
-
-    public static Image getStartImage() {
-        return startImage;
-    }
-
-    public static void setStartImage(Image startImage) {
-        GetImage.startImage = startImage;
-    }
-
-    public static Image getPurposeImage() {
-        return purposeImage;
     }
 
     public Image getVectorImageByDirection(Point p) {

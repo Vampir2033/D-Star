@@ -2,12 +2,11 @@ package astar;
 
 import engine.CellStatus;
 import engine.PointsContainer;
-import map.CellFreedom;
+import engine.Robot;
 import map.ObstacleMap;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static astar.AlgorithmIterations.UPDATE_NEIGHBOURS;
@@ -18,6 +17,7 @@ public class AStarAlgorithm implements PointsContainer {
     private final ObstacleMap obstacleMap;
     private final Point pointStart;
     private final Point pointEnd;
+    private final Robot robot;
 
     private final Map<Point, AStarPoint> openPoints;
     private final Set<AStarPoint> closePoints;
@@ -27,10 +27,11 @@ public class AStarAlgorithm implements PointsContainer {
 
     private AlgorithmIterations activeIteration;
 
-    public AStarAlgorithm(ObstacleMap obstacleMap, Point pointStart, Point pointEnd) {
+    public AStarAlgorithm(ObstacleMap obstacleMap, Point pointStart, Point pointEnd, Robot robot) {
         this.obstacleMap = obstacleMap;
         this.pointStart = pointStart;
         this.pointEnd = pointEnd;
+        this.robot = robot;
 
         openPoints = new HashMap<>();
         closePoints = new HashSet<>();
@@ -136,5 +137,8 @@ public class AStarAlgorithm implements PointsContainer {
         return vectors;
     }
 
-
+    @Override
+    public Robot getRobot() {
+        return robot;
+    }
 }

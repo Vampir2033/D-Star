@@ -39,6 +39,11 @@ public class Panel extends JPanel {
         g2.drawImage(startImg,startPoint.x,startPoint.y,1,1,null);
         Image purposeImg = GetImage.getPurposeImage();
         g2.drawImage(purposeImg,purposePoint.x,purposePoint.y,1,1,null);
+        Robot robot = pointsContainer.getRobot();
+        Image robotImage = robot.getImage();
+        Point robotPoint = robot.imagePosWithShift();
+        int robotImageSize = robot.imageSize();
+        g2.drawImage(robotImage,robotPoint.x,robotPoint.y,robotImageSize,robotImageSize,null);
     }
 
     private Point shiftImageToCenter(Point leftUpPoint, Image image) {
