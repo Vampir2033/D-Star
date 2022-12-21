@@ -37,7 +37,7 @@ public class Application {
         assert imageFileUrl != null;
         BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
         ObstacleMap map = new ObstacleMap(bufferedImage);
-        RobotHexagon robotHexagon = new RobotHexagon(4, GetImage.getHexagonImage(), firstPoint, 0.0);
+        RobotHexagon robotHexagon = new RobotHexagon(4, GetImage.getHexagonImage(), firstPoint);
         AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(map,firstPoint,purposePoint, robotHexagon);
         Drower drower = new Drower(bufferedImage, scale, firstPoint, purposePoint, aStarAlgorithm);
         drower.repaint();
