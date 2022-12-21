@@ -1,12 +1,17 @@
 package astar;
 
+//создает функцию, которая позволяет получить значение переменной
 import lombok.Getter;
+//создает функцию, которая позволяет записать значение переменную
 import lombok.Setter;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//Point - хранит в себе значения Х и У
+//AStarPoint - предоставляет методы для работы с Х и У (хранит указатель на предыдущую точку и на конечную точку)
+//свойства Point передаем AStarPoint через extends
 public class AStarPoint extends Point implements Comparable<AStarPoint> {
     @Setter
     private static Point endPoint;
@@ -30,12 +35,14 @@ public class AStarPoint extends Point implements Comparable<AStarPoint> {
         return Math.abs(point.x - x) + Math.abs(point.y - y);
     }
 
+    //метод позволяет определить расстояние от текущей точки до старта
     public double distanceToStart() {
         if(previousPoint == null) {
             return 0.0;
         } else if(bufferedDistanceToStart != null) {
             return bufferedDistanceToStart;
         } else {
+            //обращаемся к предыдущей точке, берем ее расстояние до старта и прибавляем красстоянию до предыдущ точки
             return previousPoint.distanceToStart() + distance(previousPoint);
         }
     }
