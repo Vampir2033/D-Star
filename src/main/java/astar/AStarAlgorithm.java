@@ -85,24 +85,38 @@ public class AStarAlgorithm implements PointsContainer {
     }
 
     // Анализ соседей активной точки
+    //в качестве параметра пердаем активную точку
     private void getNeighbours(AStarPoint p) {
         for(int x = p.x-1; x <= p.x+1; x++) {
             for(int y = p.y-1; y <= p.y+1; y++){
                 AStarPoint neighbour = new AStarPoint(new Point(x,y));
                 // проверка, действительно ли позицию можно считать соседом
+                //не проверяем ли ячейку, на которой стоим
                 if(!neighbour.equals(activePoint)
+                        //обращаемся к карте препятствий и проверяем, не явл ли ячейка препятствием
                         && obstacleMap.getCellStatus(neighbour) == EMPTY
+                        //проверяем, не находится ли ячейка уже в закрытом списке(окончательно проанализированная ячейка)
                         && !closePoints.contains(neighbour)
+                        //может ли робот встать на эту ячейку, не наехав на препятствие
                         && robot.checkPointAvailableForRobot(neighbour,obstacleMap)) {
+                    //если сосед находится в открытом списке, проверяем
+                    //не будет ли ему ближе идти через активную точку(через ту, которую анализируем)
                     if(openPoints.containsKey(neighbour)) {
                         neighbour = openPoints.get(neighbour);
+                        //кратчайшее расстояние от активной точки до старта
                         double activePointDistanceToStart = activePoint.distanceToStart();
+                        //получаем текущее расстояние от соседа до точки старта
                         double neighbourDistanceToStart = neighbour.distanceToStart();
+                        //считаем расстояние от активной точки до соседа
                         double distanceToNeighbour = activePoint.distance(neighbour);
+                        //если расстояние до старта через активную точку будет ближе..
                         if(neighbourDistanceToStart > activePointDistanceToStart + distanceToNeighbour) {
+                            //присваиваем соседу предыдущую точку себя
                             neighbour.setPreviousPoint(activePoint);
                         }
                     } else {
+                        //если точка не нашлась ни вткрытом, ни в закрытом списке, и на ней потенциально может находиться робот
+                        //ставим этой точке предыдущую точку себя и добавляем в открытый список
                         neighbour.setPreviousPoint(activePoint);
                         openPoints.put(neighbour,neighbour);
                     }
@@ -140,16 +154,16 @@ public class AStarAlgorithm implements PointsContainer {
     @Override
     public Map<Point, Point> getPointsVectors() {
         Map<Point, Point> vectors = new HashMap<>();
-//        Set<AStarPoint> unionPoints = new HashSet<>();
-//        unionPoints.addAll(openPoints.values());
-//        unionPoints.addAll(closePoints);
-//
-//        for(AStarPoint p : unionPoints) {
-//            AStarPoint prevPoint = p.getPreviousPoint();
-//            if(prevPoint != null && !p.equals(pointEnd)) {
-//                vectors.put(p, new Point(prevPoint.x - p.x,prevPoint.y - p.y));
-//            }
-//        }
+        Set<AStarPoint> unionPoints = new HashSet<>();
+        unionPoints.addAll(openPoints.values());
+        unionPoints.addAll(closePoints);
+
+        for(AStarPoint p : unionPoints) {
+            AStarPoint prevPoint = p.getPreviousPoint();
+            if(prevPoint != null && !p.equals(pointEnd)) {
+                vectors.put(p, new Point(prevPoint.x - p.x,prevPoint.y - p.y));
+            }
+        }
         return vectors;
     }
 
