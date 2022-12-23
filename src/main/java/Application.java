@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Scanner;
 
 public class Application {
 
@@ -37,18 +38,23 @@ public class Application {
 //        double scale = 64;
 //        int radius = 1;
 
-//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
-//        Point firstPoint = new Point(73,10);
-//        Point purposePoint = new Point(80,60);
-//        double scale = 13;
-//        int radius = 2;
-
-        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_width_lab.bmp");
-        Point firstPoint = new Point(109,35);
-        Point purposePoint = new Point(110,10);
+        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
+        Point firstPoint = new Point(73,10);
+        Point purposePoint = new Point(80,60);
         double scale = 13;
-        int radius = 4;
+        int radius = 2;
 
+//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_width_lab.bmp");
+//        Point firstPoint = new Point(109,35);
+//        Point purposePoint = new Point(110,10);
+//        double scale = 13;
+//        int radius = 4;
+
+
+        System.out.println("Введите координаты старта");
+        firstPoint = inputPoint();
+        System.out.println("Введите координаты финиша");
+        purposePoint = inputPoint();
         assert imageFileUrl != null;
         // инициализация карты
         BufferedImage bufferedImage = ImageIO.read(imageFileUrl);
@@ -87,5 +93,16 @@ public class Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private static Point inputPoint() {
+        Scanner in = new Scanner(System.in);
+        System.out.print("X > ");
+        int x = in.nextInt();
+        System.out.print("Y > ");
+        int y = in.nextInt();
+        Point p = new Point(x,y);
+        System.out.println("Введённая точка: " + p);
+        return p;
     }
 }
