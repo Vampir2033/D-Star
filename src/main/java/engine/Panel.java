@@ -41,15 +41,15 @@ public class Panel extends JPanel {
         Robot robot = pointsContainer.getRobot();
         Point robotPoint = robot.imagePosWithShift();
         int robotImageSize = robot.imageSize();
-        Image underRobotCellImg = GetImage.getImageByStatus(UNDER_ROBOT);
-        for(int x = robotPoint.x; x <= robotPoint.x+robotImageSize; x++) {
-            for(int y = robotPoint.y; y <= robotPoint.y+robotImageSize; y++) {
-                Point checkedPoint = new Point(x,y);
-                if(robot.checkPointUnderRobot(checkedPoint)) {
-                    g2.drawImage(underRobotCellImg,x,y,1,1,null);
-                }
-            }
-        }
+//        Image underRobotCellImg = GetImage.getImageByStatus(UNDER_ROBOT);
+//        for(int x = robotPoint.x; x <= robotPoint.x+robotImageSize; x++) {
+//            for(int y = robotPoint.y; y <= robotPoint.y+robotImageSize; y++) {
+//                Point checkedPoint = new Point(x,y);
+//                if(robot.checkPointUnderRobot(checkedPoint)) {
+//                    g2.drawImage(underRobotCellImg,x,y,1,1,null);
+//                }
+//            }
+//        }
         Image robotImage = robot.getImage();
         g2.drawImage(robotImage,robotPoint.x+1,robotPoint.y+1,robotImageSize-2,robotImageSize-2,null);
         Image startImg = getStartImage();

@@ -37,17 +37,23 @@ public class Application {
 //        double scale = 64;
 //        int radius = 1;
 
+        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/карта.png");
+        Point firstPoint = new Point(49,4);
+        Point purposePoint = new Point(2,74);
+        double scale = 10;
+        int radius = 1;
+
 //        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_labyrinth.bmp");
 //        Point firstPoint = new Point(73,10);
 //        Point purposePoint = new Point(80,60);
 //        double scale = 13;
 //        int radius = 2;
 
-        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_width_lab.bmp");
-        Point firstPoint = new Point(109,35);
-        Point purposePoint = new Point(110,10);
-        double scale = 13;
-        int radius = 4;
+//        URL imageFileUrl = Application.class.getClassLoader().getResource("images/maps/128x64_width_lab.bmp");
+//        Point firstPoint = new Point(109,35);
+//        Point purposePoint = new Point(110,10);
+//        double scale = 13;
+//        int radius = 4;
 
         assert imageFileUrl != null;
         // инициализация карты
