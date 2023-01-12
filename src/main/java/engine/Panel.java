@@ -36,11 +36,10 @@ public class Panel extends JPanel {
         points.forEach((point,status) -> drawCell(g2,point,status));
         var vectors = pointsContainer.getPointsVectors();
         vectors.forEach((point, vector) -> drawVector(g2,point,vector));
-        Image purposeImg = GetImage.getPurposeImage();
-        g2.drawImage(purposeImg,purposePoint.x,purposePoint.y,1,1,null);
         Robot robot = pointsContainer.getRobot();
-        Point robotPoint = robot.imagePosWithShift();
-        int robotImageSize = robot.imageSize();
+        if(robot != null) {
+            Point robotPoint = robot.imagePosWithShift();
+            int robotImageSize = robot.imageSize();
 //        Image underRobotCellImg = GetImage.getImageByStatus(UNDER_ROBOT);
 //        for(int x = robotPoint.x; x <= robotPoint.x+robotImageSize; x++) {
 //            for(int y = robotPoint.y; y <= robotPoint.y+robotImageSize; y++) {
@@ -50,10 +49,13 @@ public class Panel extends JPanel {
 //                }
 //            }
 //        }
-        Image robotImage = robot.getImage();
-        g2.drawImage(robotImage,robotPoint.x+1,robotPoint.y+1,robotImageSize-2,robotImageSize-2,null);
+            Image robotImage = robot.getImage();
+            g2.drawImage(robotImage,robotPoint.x+1,robotPoint.y+1,robotImageSize-2,robotImageSize-2,null);
+        }
         Image startImg = getStartImage();
         g2.drawImage(startImg,startPoint.x,startPoint.y,1,1,null);
+        Image purposeImg = GetImage.getPurposeImage();
+        g2.drawImage(purposeImg,purposePoint.x,purposePoint.y,1,1,null);
     }
 
     private Point shiftImageToCenter(Point leftUpPoint, Image image) {
