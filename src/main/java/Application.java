@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
+import static fringe.AlgorithmIterationResult.PROCESSING;
+import static fringe.AlgorithmIterationResult.WAY_FOUND;
+
 public class Application {
 
     public static void main(String[] args) throws IOException {
@@ -46,23 +49,24 @@ public class Application {
         // старт алгоритма
 //        boolean algorithmEnd = false;
         AlgorithmIterationResult iterationResult;
-        try {
-            do {
-                iterationResult = searchAlgorithm.nextIteration();
+        do {
+            iterationResult = searchAlgorithm.nextIteration();
 //                algorithmEnd = searchAlgorithm.nextIteration();
-                drower.repaint();
-                // задержку регулировать здесь
+            drower.repaint();
+            // задержку регулировать здесь
 //                delayStep(1);
 //                delayStep(5);
 //                delayStep(10);
-//                delayStep(100);
-//                delayStep(500);
+//            delayStep(100);
+                delayStep(500);
 //                delayStep(1000);
-            } while (iterationResult == AlgorithmIterationResult.PROCESSING);
-            System.out.println("Алгоритм нашёл кратчайший путь");
-        } catch (RuntimeException e) {
+        } while (iterationResult == PROCESSING);
+        if(iterationResult == WAY_FOUND) {
+            System.out.println("Кратчайший путь найден");
+        } else {
             System.out.println("Невозможно найти кратчайший путь");
         }
+
     }
 
     private static void delayStep(int millis) {

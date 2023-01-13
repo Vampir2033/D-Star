@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FringeSearchPoint extends Point {
     @Setter private static Point endPoint;
@@ -23,6 +25,17 @@ public class FringeSearchPoint extends Point {
         } else {
             distanceToStart = 0;
         }
+    }
+
+    public List<FringeSearchPoint> getStack() {
+        List<FringeSearchPoint> result;
+        if(parentPoint == null) {
+            result = new ArrayList<>();
+        } else {
+            result = parentPoint.getStack();
+        }
+        result.add(this);
+        return result;
     }
 
     public int getCost() {
