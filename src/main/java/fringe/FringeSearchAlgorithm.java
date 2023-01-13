@@ -39,8 +39,8 @@ public class FringeSearchAlgorithm implements PointsContainer {
         closeNodes = new ArrayList<>();
         shortestWay = null;
 
-        if(obstacleMap.getCellStatus(startPoint) == OBSTRUCTION) {
-            throw new RuntimeException("Точка старта находится на препятствии");
+        if(!robot.checkPointAvailableForRobot(startPoint, obstacleMap, new Point(0,-1))) {
+            throw new RuntimeException("Робот находится на препятствии");
         } else if (obstacleMap.getCellStatus(endPoint) == OBSTRUCTION) {
             throw new RuntimeException("Точка финиша находится на препятствии");
         } else if (startPoint.equals(endPoint)) {
@@ -114,8 +114,7 @@ public class FringeSearchAlgorithm implements PointsContainer {
     }
 
     private boolean checkPosition(FringeSearchPoint p) {
-        CellFreedom cellFreedom = obstacleMap.getCellStatus(p);
-        return cellFreedom == EMPTY;
+        return robot.checkPointAvailableForRobot(p,obstacleMap,p.getVector());
     }
 
     private AlgorithmIteration switchIteration() {
@@ -142,7 +141,10 @@ public class FringeSearchAlgorithm implements PointsContainer {
 
     @Override
     public Map<Point, Point> getPointsVectors() {
-        return new HashMap<>();
+        Map<Point, Point> resultMap = new HashMap<>();
+        fringeNodes.forEach(n -> resultMap.put(n, n.getVector()));
+        closeNodes.forEach(n -> resultMap.put(n, n.getVector()));
+        return resultMap;
     }
 
     @Override

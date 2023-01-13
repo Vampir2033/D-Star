@@ -8,6 +8,5 @@ public interface Robot {
     Image getImage();
     int imageSize();
     Point imagePosWithShift();
-    boolean checkPointUnderRobot(Point point);
-    boolean checkPointAvailableForRobot(Point point, ObstacleMap obstacleMap);
+    boolean checkPointAvailableForRobot(Point point, ObstacleMap obstacleMap, Point vector);
 }

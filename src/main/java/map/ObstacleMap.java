@@ -84,4 +84,11 @@ public class ObstacleMap {
 //    private double lineFunction(int x, double cA, double cB){
 //        return cA*x + cB;
 //    }
+
+
+    @Override
+    public String toString() {
+        return "Ширина=" + width +
+                ", Высота=" + height;
+    }
 }

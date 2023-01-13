@@ -39,7 +39,23 @@ public class FringeSearchPoint extends Point {
     }
 
     public int getCost() {
-        return distanceToStart + manhattanDistanceToPoint();
+        return distanceToStart + manhattanDistanceToPoint() + getCostChangeDirection();
+    }
+
+    public Point getVector() {
+        if(parentPoint == null) {
+            return new Point(0,-1);
+        } else {
+            return new Point(x - parentPoint.x, y - parentPoint.y);
+        }
+    }
+
+    private int getCostChangeDirection() {
+        if(parentPoint == null) {
+            return 0;
+        } else {
+            return parentPoint.getVector().equals(getVector()) ? 0:1;
+        }
     }
 
     // алгоритм Манхеттона для приблизительной оценки расстояния до финиша
